@@ -1,0 +1,8 @@
+import(digest)
+import(kinship2)
+export(es.pedigree, plot.es.pedigree,  print.es.pedigree)
+export(modele.di)
+export(Likelihood, Elston)
+export(es.stopCluster)
+S3method(plot, es.pedigree)
+S3method(print, es.pedigree)
