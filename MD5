@@ -1,9 +1,9 @@
-7277e7124891101de6166430fade67ef *DESCRIPTION
+d57868958c628907f02966cd0564fd07 *DESCRIPTION
 2f66016df201a5b96ee235a4d5ffe424 *NAMESPACE
 d3a1be7ca3829d9ba5d9355802ba7940 *R/Elston-algorithm.r
 30984f9821a8dcbca136c83397688f62 *R/Elston-bases.r
 6401a9f6dd5800bc0d8069695f9ca902 *R/Elston-objects.r
-88d5fefd8b2c6210bd9f0096443dffc1 *R/Elston-parallel.r
+aa0030fee8424aa18f6050179c984211 *R/Elston-parallel.r
 b1bb6f69bfd4ee9408e190fe0073b3e1 *data/conrad2.tab.gz
 33927c575560dbaf66247b99c2b6e61d *data/fams.rda
 944cb5a4fdb9b290d047212bf0969432 *inst/doc/Elston-Stewart.R
@@ -11,7 +11,7 @@ b1bb6f69bfd4ee9408e190fe0073b3e1 *data/conrad2.tab.gz
 221b18d62d305fef5bb3e62ff74e46f5 *inst/doc/Elston-Stewart.pdf
 1c3506f94030df87e4d59e01c56b3c87 *man/Elston.Rd
 37c19a43f62b552e0d50c2b6d1687428 *man/ElstonStewart.Rd
-4e5346664595ecac5efb6930a7d21867 *man/Likelihood.Rd
+a27cfe26c210c73a87c6d8b15103227e *man/Likelihood.Rd
 dc90957504917bfb064323477be2bed5 *man/conrad2.Rd
 08201dfdcf8346653cf4d0c5de27ab8b *man/es.pedigree.Rd
 e645e45a6f9627e27ca78f56d62f2fdb *man/es.stopCluster.Rd

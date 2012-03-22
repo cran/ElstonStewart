@@ -5,7 +5,7 @@
 .mem <- new.env()
 ClusterEnv <- new.env()
 
-Likelihood <- function(ped.set, modele, theta, n.cores = getOption("mc.cores", 2L), optim.alloc = TRUE, sum.likelihoods = TRUE)
+Likelihood <- function(ped.set, modele, theta, n.cores = getOption("mc.cores", 2L), optim.alloc = TRUE, sum.likelihoods = TRUE, PSOCK = Sys.info()["sysname"] != "Linux")
 {
   if(n.cores == 1)
   {
@@ -31,8 +31,13 @@ Likelihood <- function(ped.set, modele, theta, n.cores = getOption("mc.cores", 2
   else
   {
     # cat("building cluster\n")
-    cl <- makeForkCluster(n.cores)
-    x <- Likelihood.first.run(ped.set, modele, theta, cl, optim.alloc, sum.likelihoods)
+    if(PSOCK) {
+      cl <- makePSOCKcluster(n.cores)
+      clusterExport(cl, c("likelihood.0", "likelihood.00", "likelihood.0.vec", "likelihood.00.vec", "Elston", "ClusterEnv"), environment(likelihood.0))
+    } else
+      cl <- makeForkCluster(n.cores)
+
+    x <- Likelihood.first.run(ped.set, modele, theta, cl, optim.alloc, sum.likelihoods, PSOCK)
     mem.sv(key, list(cl=cl, o=x$o), .mem)
     return(x$likelihood)
   }
@@ -50,7 +55,7 @@ es.stopCluster <- function(verbose=TRUE)
   }
 }
 
-Likelihood.first.run <- function(ped.set, modele, theta, cl, optim.alloc, sum.likelihoods)
+Likelihood.first.run <- function(ped.set, modele, theta, cl, optim.alloc, sum.likelihoods, PSOCK)
 {
   n.cores <- length(cl)
   # préparation découpage des données
@@ -68,7 +73,7 @@ Likelihood.first.run <- function(ped.set, modele, theta, cl, optim.alloc, sum.li
   }
 
   # initialise PED et MODELE
-  clusterApply(cl, seq_len(n.cores), function(i) assign( "PED", X[[i]], ClusterEnv) )# PED <<- X[[i]] )
+  clusterApply(cl, X, function(x) assign( "PED", x, ClusterEnv) )# PED <<- X[[i]] )
   clusterApply(cl, rep(list(modele), n.cores), function(x) assign("MODELE", x, ClusterEnv)) # MODELE <<- x)
   # initialise MEM 
   clusterApply( cl, seq_len(n.cores), function(i) assign("MEMO", replicate( length(get("PED", envir=ClusterEnv)) , new.env()), ClusterEnv)) #  MEMO <<- replicate(length(PED),new.env()))
@@ -98,7 +103,7 @@ Likelihood.first.run <- function(ped.set, modele, theta, cl, optim.alloc, sum.li
   {
     X[[i]] <- ped.set[ Indices[[i]] ]
   }
-  clusterApply( cl, seq_len(n.cores), function(i) assign("PED", X[[i]], ClusterEnv)) # PED <<- X[[i]] )
+  clusterApply(cl, X, function(x) assign( "PED", x, ClusterEnv) )# PED <<- X[[i]] )
   clusterApply( cl, seq_len(n.cores), function(i) assign("MEMO", replicate( length(get("PED", envir=ClusterEnv)) , new.env()), ClusterEnv))  #MEMO <<- replicate(length(PED),new.env()))
   if(sum.likelihoods)
     return(list( likelihood = Reduce(function(x,y) x + y$likelihood, R, 0), o = o) )

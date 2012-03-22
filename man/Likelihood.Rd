@@ -4,7 +4,8 @@
 \description{Compute the log-likelihood of a parameter \code{theta}, given a list of pedigrees and a modele, using multiple cores and memoization}
 \usage{Likelihood(ped.set, modele, theta, 
                   n.cores = getOption("mc.cores", 2L), 
-                  optim.alloc = TRUE, sum.likelihoods = TRUE)}
+                  optim.alloc = TRUE, sum.likelihoods = TRUE,
+                  PSOCK = Sys.info()["sysname"] != "Linux")}
 \arguments{
   \item{ped.set}{a list of pedigrees, each created with \code{es.pedigree}}
   \item{modele}{a modele}
@@ -12,6 +13,7 @@
   \item{n.cores}{number of cores on which to run the computation}
   \item{optim.alloc}{cf Details}
   \item{sum.likelihoods}{cf Value}
+  \item{PSOCK}{Use PSOCK cluster instead of fork cluster (defaults to \code{TRUE} on non-Linux)}
 }
 \details{
 The parameter \code{theta} will be given to the functions in \code{modele} to compute the likelihoods.
