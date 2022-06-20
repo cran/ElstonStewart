@@ -1,5 +1,4 @@
 ### R code from vignette source 'Elston-Stewart.Rnw'
-### Encoding: UTF-8
 
 ###################################################
 ### code chunk number 1: Elston-Stewart.Rnw:22-23

@@ -191,7 +191,7 @@ extract.pivot <- function(splitted, mem = new.env())
 
 Elston <- function(ped, modele, theta, mem = new.env())
 {
-  if(class(ped) != "es.pedigree")
+  if(!is(ped,"es.pedigree"))
     stop("Argument ped is not of class es.pedigree")
   Re <- split.ped(ped, mem)
   Elston.on.splitted( Re$result, modele, theta, Re$mem)
